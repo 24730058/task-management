@@ -1,0 +1,14 @@
+b1: khoi tao npm 
+=> npm init
+b2: cai dat express 
+=> npm i express
+b3: cai dat nodemon de tu dong start server 
+=> npm i --save--dev nodemon
+b4: doi cau lenh cho npm start 
+=> "nodemon --inspect index.js"
+b5: tao file index.js va cau hinh 
+=>  const express = require('express');
+    const app = express();
+    const port = 3000;
+
+                                    
