@@ -134,3 +134,26 @@ module.exports.create = async (req, res) => {
         });
     }
 }
+
+// [PATCH] /api/v1/tasks/edit
+module.exports.edit = async (req, res) => {
+    const id = req.params.id;
+    const taskData = req.body;
+    try {
+        await Task.updateOne(
+            { _id: id },
+            { $set: taskData }
+        );
+
+        res.json({
+            code: 200,
+            message: "Cập nhật công việc thành công",
+        })
+    } catch (error) {
+        res.json({
+            code: 400,
+            message: "Lỗi khi cập nhật công việc",
+            error: error.message
+        });
+    }
+}
