@@ -16,7 +16,7 @@ module.exports.index = async (req, res) => {
         sort[req.query.sortKey] = req.query.sortValue;
     };
     // end sort
-
+    
     // Phân trang
     let limitItems = 4;
     let page = 1;
@@ -32,7 +32,7 @@ module.exports.index = async (req, res) => {
     const skip = (page - 1) * limitItems;
     // Hết Phân trang
 
-    // Tìm kiếmAdd commentMore actions
+    // Tìm kiếm
     if(req.query.keyword) {
         const regex = new RegExp(req.query.keyword, "i");
         find.title = regex;
@@ -56,8 +56,7 @@ module.exports.detail = async (req, res) => {
         _id: taskId,
         deleted: false
     });
-    console.log(task);
-    console.log('ID:', taskId);
+
     res.json(task);
 };
 
@@ -85,5 +84,34 @@ module.exports.changeStatus = async (req, res) => {
             code: 404,
             message: "Không tồn tại",
         });
+    }
+}
+
+// [PATCH] /api/v1/tasks/change-multi
+module.exports.changeMulti = async (req, res) => {
+    const ids = req.body.ids;
+    const key = req.body.key;
+    const value = req.body.value;
+
+    switch (key) {
+        case "status":
+            await Task.updateMany({
+                _id: {
+                    $in: ids
+                }
+            }, {
+                status: value
+            });
+            res.json({
+                code: 200,
+                message: "Cập nhật trạng thái thành công",
+            });
+            break;
+        default:
+            res.json({
+                code: 400,
+                message: "Không hỗ trợ cập nhật trường này",
+            });
+            break;
     }
 }
