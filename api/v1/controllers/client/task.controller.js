@@ -90,31 +90,31 @@ module.exports.changeStatus = async (req, res) => {
 // [PATCH] /api/v1/tasks/change-multi
 module.exports.changeMulti = async (req, res) => {
     const ids = req.body.ids;
-    const key = req.body.key;
-    const value = req.body.value;
+    const status = req.body.status;
 
-    switch (key) {
-        case "status":
-            await Task.updateMany({
-                _id: {
-                    $in: ids
-                }
-            }, {
-                status: value
-            });
-            res.json({
-                code: 200,
-                message: "Cập nhật trạng thái thành công",
-            });
-            break;
-        default:
-            res.json({
-                code: 400,
-                message: "Không hỗ trợ cập nhật trường này",
-            });
-            break;
+    try {
+        await Task.updateMany({
+        _id: {
+            $in: ids
+        }
+        }, {
+            status: status
+        });
+
+        res.json({
+            code: 200,
+            message: "Cập nhật trạng thái thành công",
+        });
+    } catch (error) {
+
+        res.json({
+            code: 400,
+            message: "Không hỗ trợ cập nhật trường này",
+        });
     }
+
 }
+
 
 // [PATCH] /api/v1/tasks/create
 module.exports.create = async (req, res) => {
@@ -153,6 +153,32 @@ module.exports.edit = async (req, res) => {
         res.json({
             code: 400,
             message: "Lỗi khi cập nhật công việc",
+            error: error.message
+        });
+    }
+}
+
+// [DELETE] /api/v1/tasks/delete/
+module.exports.delete = async (req, res) => {
+    const ids = req.body.ids;
+
+    try {
+        await Task.updateOne({
+            _id: {
+                $in: ids
+            }
+        }, {
+            deleted: true,
+            deletedAt: new Date()
+        });
+        res.json({
+            code: 200,
+            message: "Xóa công việc thành công",
+        });
+    } catch (error) {
+        res.json({
+            code: 400,
+            message: "Lỗi khi xóa công việc",
             error: error.message
         });
     }

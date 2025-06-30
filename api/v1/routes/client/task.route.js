@@ -15,6 +15,9 @@ router.patch("/create", controller.create);
 
 router.patch("/edit/:id", controller.edit);
 
+router.delete("/delete", controller.delete);
+
+
 
 
 
