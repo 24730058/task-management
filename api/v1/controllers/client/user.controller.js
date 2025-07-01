@@ -173,15 +173,15 @@ module.exports.resetPassword = async (req, res) => {
 
 //[GET] /api/v1/users/profile
 module.exports.profile = async (req, res) => {
-    const token = req.cookies.token;
-    const user = await User.findOne({
-        token: token,
-        deleted: false,
-    }).select("-password -token");
+    // const token = req.cookies.token;
+    // const user = await User.findOne({
+    //     token: token,
+    //     deleted: false,
+    // }).select("-password -token");
 
     res.json({
         code: 200,
         message: "User profile retrieved successfully",
-        profile: user
+        profile: req.user // Assuming loginAuth middleware sets req.user
     });
 }

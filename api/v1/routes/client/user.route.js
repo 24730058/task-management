@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const controller = require("../../controllers/client/user.controller");
+const loginAuth = require("../../../../validate/client/loginAuth.validate");
 
 router.post("/register", controller.register);
 
@@ -13,10 +14,7 @@ router.post("/password/otp", controller.otpPassword);
 
 router.post("/password/reset", controller.resetPassword);
 
-router.get("/profile", controller.profile);
-
-
-
+router.get("/profile", loginAuth.loginAuth, controller.profile);
 
 
 module.exports = router;
