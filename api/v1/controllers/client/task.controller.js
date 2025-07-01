@@ -1,4 +1,5 @@
 const Task = require('../../models/task.model');
+const User = require('../../models/user.model');
 
 
 // [GET] /api/v1/tasks
@@ -118,10 +119,14 @@ module.exports.changeMulti = async (req, res) => {
 
 // [PATCH] /api/v1/tasks/create
 module.exports.create = async (req, res) => {
+
+    req.body.createdBy = req.user._id; 
+
     const task = new Task(req.body);
 
     try {
         await task.save();
+ 
         res.json({
             code: 200,
             message: "Tạo công việc thành công",
